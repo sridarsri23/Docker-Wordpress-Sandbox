@@ -23,29 +23,27 @@ Follow the steps below to set up and run the WordPress environment using Docker.
 ### Steps
 
 1. **Clone the Repository**
-
-   ```sh
+   ```
    git clone https://github.com/yourusername/Docker_WP_Sandbox.git
    cd Docker_WP_Sandbox
+   ```
 
-2. **Build the Docker Images**
+3. **Build the Docker Images**
 
+   `docker-compose build`
 
-   docker-compose build
+4. **Run the Containers**
 
-3. **Run the Containers**
+    `docker-compose up`
 
-
-    docker-compose up
-
-4. **Access WordPress**
+5. **Access WordPress**
 
     Open your web browser and navigate to http://localhost:8888. You should see the WordPress setup screen.
 
-Logging into WordPress
+6. **Logging into WordPress**
 
-    The default database credentials are set in docker-compose.yml.
-    You will be prompted to set up an admin user during the WordPress setup process.
+The default database credentials are set in docker-compose.yml.
+You will be prompted to set up an admin user during the WordPress setup process.
 
 **Customizing for Specific Versions of WordPress and PHP**
 # Changing the WordPress Version
@@ -54,10 +52,11 @@ To use a different version of WordPress, modify the curl command in the Dockerfi
 
 
 **Dockerfile**
+```
 RUN curl -o wordpress.tar.gz https://wordpress.org/wordpress-5.7.2.tar.gz && \
     tar -xzf wordpress.tar.gz --strip-components=1 -C /usr/src/wordpress && \
     rm wordpress.tar.gz
-
+```
 # Changing the PHP Version
 
 To change the PHP version, update the FROM line in the Dockerfile. For example, to use PHP 8.0:
@@ -70,23 +69,22 @@ FROM wordpress:php8.0-apache
 # Custom PHP Configuration
 
 Ensure you have a php.ini file in the same directory as your Dockerfile. Modify it as needed to customize PHP settings.
-Files
-
-    Dockerfile: Defines the environment for WordPress, including PHP and Apache.
-    docker-compose.yml: Sets up the WordPress and MySQL containers and defines the necessary environment variables and volumes.
-    entrypoint.sh: Ensures wp-config.php is created and properly configured on startup.
-    php.ini: Custom PHP configuration file (ensure this file is present in the directory).
+**Files**
+Dockerfile: Defines the environment for WordPress, including PHP and Apache.
+docker-compose.yml: Sets up the WordPress and MySQL containers and defines the necessary environment variables and volumes.
+entrypoint.sh: Ensures wp-config.php is created and properly configured on startup.
+php.ini: Custom PHP configuration file (ensure this file is present in the directory).
 
 Example php.ini
 
 Here is an example of what your php.ini might look like:
 
-
+```
 upload_max_filesize = 64M
 post_max_size = 64M
 max_execution_time = 300
-
-#License
+```
+# License
 
 This project is licensed under the MIT License. See the LICENSE file for details.
 Contact
@@ -116,11 +114,9 @@ Ensure these settings match those in wp-config.php if you make any changes.
 # Entrypoint Script
 
 The entrypoint.sh script ensures that the wp-config.php file is created and configured with the correct database settings.
-
-
+(Copy wp-config.php if it does not exist)
+```
 #!/bin/bash
-
-# Copy wp-config.php if it does not exist
 if [ ! -e /var/www/html/wp-config.php ]; then
     cp /usr/src/wordpress/wp-config-sample.php /var/www/html/wp-config.php
     sed -i 's/database_name_here/wordpress/' /var/www/html/wp-config.php
@@ -128,6 +124,6 @@ if [ ! -e /var/www/html/wp-config.php ]; then
     sed -i 's/password_here/wordpress/' /var/www/html/wp-config.php
     sed -i 's/localhost/db/' /var/www/html/wp-config.php
 fi
-
+```
 
 
