@@ -1,6 +1,6 @@
-markdown
 
-# Docker_WP_Sandbox by SridarSri
+
+# Docke-WP-Sandbox by SridarSri
 
 This repository provides a Docker-based environment for running WordPress with PHP 7.4 and Apache, along with MySQL 5.7 as the database backend. It includes custom configurations and an entrypoint script to ensure proper setup.
 
@@ -28,19 +28,17 @@ Follow the steps below to set up and run the WordPress environment using Docker.
    git clone https://github.com/yourusername/Docker_WP_Sandbox.git
    cd Docker_WP_Sandbox
 
-    Build the Docker Images
+2. **Build the Docker Images**
 
-    sh
 
-docker-compose build
+   docker-compose build
 
-Run the Containers
+3. **Run the Containers**
 
-sh
 
     docker-compose up
 
-    Access WordPress
+4. **Access WordPress**
 
     Open your web browser and navigate to http://localhost:8888. You should see the WordPress setup screen.
 
@@ -49,28 +47,27 @@ Logging into WordPress
     The default database credentials are set in docker-compose.yml.
     You will be prompted to set up an admin user during the WordPress setup process.
 
-Customizing for Specific Versions of WordPress and PHP
-Changing the WordPress Version
+**Customizing for Specific Versions of WordPress and PHP**
+# Changing the WordPress Version
 
 To use a different version of WordPress, modify the curl command in the Dockerfile to download the desired version. For example, to use WordPress 5.7.2:
 
-dockerfile
 
-# Dockerfile
+**Dockerfile**
 RUN curl -o wordpress.tar.gz https://wordpress.org/wordpress-5.7.2.tar.gz && \
     tar -xzf wordpress.tar.gz --strip-components=1 -C /usr/src/wordpress && \
     rm wordpress.tar.gz
 
-Changing the PHP Version
+# Changing the PHP Version
 
 To change the PHP version, update the FROM line in the Dockerfile. For example, to use PHP 8.0:
 
 dockerfile
 
-# Dockerfile
+**Dockerfile**
 FROM wordpress:php8.0-apache
 
-Custom PHP Configuration
+# Custom PHP Configuration
 
 Ensure you have a php.ini file in the same directory as your Dockerfile. Modify it as needed to customize PHP settings.
 Files
@@ -84,33 +81,19 @@ Example php.ini
 
 Here is an example of what your php.ini might look like:
 
-ini
 
 upload_max_filesize = 64M
 post_max_size = 64M
 max_execution_time = 300
 
-License
+#License
 
 This project is licensed under the MIT License. See the LICENSE file for details.
 Contact
 
-For any questions or issues, please contact [your-email@example.com].
-How to Run
 
-To run the WordPress Docker environment:
 
-sh
-
-docker-compose up
-
-This will start both the WordPress and MySQL containers. Navigate to http://localhost:8888 in your web browser to complete the WordPress setup.
-Customizing WordPress and PHP Versions
-
-    WordPress Version: Edit the RUN curl command in the Dockerfile to specify the desired WordPress version.
-    PHP Version: Change the FROM line in the Dockerfile to the desired PHP version.
-
-Environment Variables
+# Environment Variables
 
 The following environment variables are set in the docker-compose.yml file:
 
@@ -119,7 +102,7 @@ The following environment variables are set in the docker-compose.yml file:
     WORDPRESS_DB_PASSWORD: Database password (default: wordpress)
     WORDPRESS_DB_NAME: Database name (default: wordpress)
 
-Database Configuration
+# Database Configuration
 
 The MySQL database is configured with the following settings in docker-compose.yml:
 
@@ -129,11 +112,11 @@ The MySQL database is configured with the following settings in docker-compose.y
     MYSQL_PASSWORD: Password for the WordPress database (default: wordpress)
 
 Ensure these settings match those in wp-config.php if you make any changes.
-Entrypoint Script
+
+# Entrypoint Script
 
 The entrypoint.sh script ensures that the wp-config.php file is created and configured with the correct database settings.
 
-bash
 
 #!/bin/bash
 
@@ -146,5 +129,5 @@ if [ ! -e /var/www/html/wp-config.php ]; then
     sed -i 's/localhost/db/' /var/www/html/wp-config.php
 fi
 
-exec "$@"
+
 
